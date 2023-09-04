@@ -1,7 +1,10 @@
 {
   "name": "yardpomodoro",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "a pomodoro",
   "private": true,
+  "main": "dist-electron/main.js",
+  "author": "Lyyyttooon",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
@@ -31,6 +34,7 @@
     "@vue/test-utils": "^2.4.1",
     "@vue/tsconfig": "^0.4.0",
     "chromedriver": "^115.0.1",
+    "electron": "^26.1.0",
     "eslint": "^8.46.0",
     "eslint-plugin-vue": "^9.16.1",
     "geckodriver": "^4.2.0",
@@ -41,6 +45,7 @@
     "ts-node": "^10.9.1",
     "typescript": "~5.1.6",
     "vite": "^4.4.9",
+    "vite-plugin-electron": "^0.14.0",
     "vitest": "^0.34.2",
     "vue-tsc": "^1.8.8",
     "wait-on": "^7.0.1"

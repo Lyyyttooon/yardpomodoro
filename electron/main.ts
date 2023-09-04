@@ -17,6 +17,9 @@ function createWindow() {
 
   if (url) {
     win.loadURL(url)
+
+    // Open devTool if the app is not packaged
+    win.webContents.openDevTools()
   } else {
     win.loadFile(indexHtml)
   }

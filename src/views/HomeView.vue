@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import TimeCounter from '@/components/TimeCounter.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <TimeCounter />
   </main>
 </template>

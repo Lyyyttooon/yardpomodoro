@@ -6,6 +6,10 @@ import nightwatchPlugin from 'vite-plugin-nightwatch'
 
 import electron from 'vite-plugin-electron'
 
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -21,7 +25,13 @@ export default defineConfig({
         }
       }
     ]),
-    nightwatchPlugin()
+    nightwatchPlugin(),
+    AutoImport({
+      resolvers: [ElementPlusResolver()]
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()]
+    })
   ],
   resolve: {
     alias: {

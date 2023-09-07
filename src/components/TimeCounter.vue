@@ -2,8 +2,10 @@
 import { ref, computed } from 'vue'
 import { formatToTime } from '@/utils/time'
 
+const setMinutes = ref(25)
 const timeCount = ref(0)
 const isTiming = ref(false)
+
 let timingInterval: number | undefined = undefined
 
 const countHours = computed(() => {
@@ -23,8 +25,11 @@ function startTiming() {
     return
   }
   isTiming.value = true
+  timeCount.value = setMinutes.value * 60
+
+  timeCount.value--
   timingInterval = window.setInterval(() => {
-    timeCount.value++
+    timeCount.value--
   }, 1000)
 }
 
@@ -39,7 +44,11 @@ function stopTiming() {
 </script>
 
 <template>
-  <div>{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
+  <p v-if="!isTiming">
+    <span>时间：</span>
+    <el-input-number v-model="setMinutes" :min="1" :max="600" />
+  </p>
+  <div v-else>{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
   <el-button v-if="!isTiming" @click="startTiming" round>开始计时</el-button>
   <el-button v-else @click="stopTiming" round>停止计时</el-button>
 </template>

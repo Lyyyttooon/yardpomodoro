@@ -2,53 +2,82 @@
 import { ref, computed } from 'vue'
 import { formatToTime } from '@/utils/time'
 
-const setMinutes = ref(25)
-const timeCount = ref(0)
-const isTiming = ref(false)
+const minFouceMinutes = 10
+const maxFouceMinutes = 1440
+const defaultFouceMinutes = 25
+
+const setMinutes = ref(defaultFouceMinutes)
+const countTimeSeconds = ref(0)
+const isCounting = ref(false)
+const dialogVisible = ref(false)
 
 let timingInterval: number | undefined = undefined
 
 const countHours = computed(() => {
-  return formatToTime(Math.floor(timeCount.value / 3600))
+  return formatToTime(Math.floor(countTimeSeconds.value / 3600))
 })
 
 const countMinutes = computed(() => {
-  return formatToTime(Math.floor((timeCount.value % 3600) / 60))
+  return formatToTime(Math.floor((countTimeSeconds.value % 3600) / 60))
 })
 
 const countSeconds = computed(() => {
-  return formatToTime(Math.floor(timeCount.value % 60))
+  return formatToTime(Math.floor(countTimeSeconds.value % 60))
 })
 
 function startTiming() {
-  if (isTiming.value) {
+  if (isCounting.value) {
     return
   }
-  isTiming.value = true
-  timeCount.value = setMinutes.value * 60
+  isCounting.value = true
+  countTimeSeconds.value = setMinutes.value * 60
 
-  timeCount.value--
+  countTimeSeconds.value--
   timingInterval = window.setInterval(() => {
-    timeCount.value--
+    if (countTimeSeconds.value <= 0) {
+      dialogVisible.value = true
+      stopTiming()
+      return
+    }
+    countTimeSeconds.value--
   }, 1000)
 }
 
 function stopTiming() {
-  if (!isTiming.value) {
+  if (!isCounting.value) {
     return
   }
-  isTiming.value = false
+  isCounting.value = false
   window.clearInterval(timingInterval)
-  timeCount.value = 0
+  countTimeSeconds.value = 0
+}
+
+function setMinutesBlur() {
+  setMinutes.value = Math.floor(setMinutes.value)
 }
 </script>
 
 <template>
-  <p v-if="!isTiming">
+  <p v-if="!isCounting">
     <span>时间：</span>
-    <el-input-number v-model="setMinutes" :min="1" :max="600" />
+    <el-input-number
+      v-model="setMinutes"
+      :min="minFouceMinutes"
+      :max="maxFouceMinutes"
+      @blur="setMinutesBlur"
+    />
+    <span style="margin-left: 8px">分钟</span>
   </p>
   <div v-else>{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
-  <el-button v-if="!isTiming" @click="startTiming" round>开始计时</el-button>
+  <el-button v-if="!isCounting" @click="startTiming" round>开始计时</el-button>
   <el-button v-else @click="stopTiming" round>停止计时</el-button>
+
+  <el-dialog v-model="dialogVisible" :close-on-click-modal="false" title="完成">
+    <span>恭喜您完成了{{ setMinutes }}分钟的专注！</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>

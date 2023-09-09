@@ -1,6 +1,6 @@
 {
   "name": "yardpomodoro",
-  "version": "0.1.0",
+  "version": "v0.1.0-alpha.1",
   "description": "a pomodoro",
   "private": true,
   "main": "dist-electron/main.js",

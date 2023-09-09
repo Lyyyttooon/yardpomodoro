@@ -7,7 +7,7 @@
   "author": "Lyyyttooon",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check build-only && electron-builder",
+    "build": "run-p type-check build-only && electron-builder -p never",
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:e2e": "nightwatch tests/e2e",

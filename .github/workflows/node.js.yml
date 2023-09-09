@@ -41,8 +41,8 @@ jobs:
       - name: Release Windows
         uses: softprops/action-gh-release@v1
         with:
-          files: build/*
-          tag_name: ${{ github.ref }}
+          name: ${{ github.ref_name }}
+          files: build/*.exe
           draft: false
           prerelease: false
         env:

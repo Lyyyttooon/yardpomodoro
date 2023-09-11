@@ -29,6 +29,9 @@ function startTiming() {
   if (isCounting.value) {
     return
   }
+
+  window.electronAPI.setFullScreen(true)
+
   isCounting.value = true
   countTimeSeconds.value = setMinutes.value * 60
 
@@ -47,6 +50,9 @@ function stopTiming() {
   if (!isCounting.value) {
     return
   }
+
+  window.electronAPI.setFullScreen(false)
+
   isCounting.value = false
   window.clearInterval(timingInterval)
   countTimeSeconds.value = 0

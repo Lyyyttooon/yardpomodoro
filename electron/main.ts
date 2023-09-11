@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'node:path'
 
 let win: BrowserWindow | null = null
@@ -26,6 +26,8 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  ipcMain.on('set-fullscreen', handleSetFullscreen)
+
   createWindow()
 })
 
@@ -41,3 +43,9 @@ app.on('activate', () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
+
+function handleSetFullscreen(_: any, fullscreen: boolean) {
+  if (win) {
+    win.setFullScreen(fullscreen)
+  }
+}

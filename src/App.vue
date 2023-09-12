@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { useTimerStore } from '@/stores/timer'
+
+const timer = useTimerStore()
 </script>
 
 <template>
   <header>
-    <div class="wrapper">
+    <div class="wrapper" v-if="!timer.isTiming">
       <nav>
         <RouterLink to="/">专注</RouterLink>
         <RouterLink to="/about">关于</RouterLink>
@@ -34,3 +37,4 @@ nav a {
   border-left: 1px solid var(--color-border);
 }
 </style>
+@/stores/timer

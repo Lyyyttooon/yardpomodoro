@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { formatToTime } from '@/utils/time'
+import { useTimerStore } from '@/stores/timer'
+
+const timer = useTimerStore()
 
 const minFouceMinutes = 10
 const maxFouceMinutes = 1440
@@ -31,6 +34,7 @@ function startTiming() {
   }
 
   window.electronAPI.setFullScreen(true)
+  timer.toggle()
 
   isCounting.value = true
   countTimeSeconds.value = setMinutes.value * 60
@@ -52,6 +56,7 @@ function stopTiming() {
   }
 
   window.electronAPI.setFullScreen(false)
+  timer.toggle()
 
   isCounting.value = false
   window.clearInterval(timingInterval)
@@ -87,3 +92,4 @@ function setMinutesBlur() {
     </template>
   </el-dialog>
 </template>
+@/stores/timer

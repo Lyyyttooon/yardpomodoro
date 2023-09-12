@@ -79,7 +79,7 @@ function setMinutesBlur() {
     />
     <span style="margin-left: 8px">分钟</span>
   </p>
-  <div v-else>{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
+  <div class="timer" v-else>{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
   <el-button v-if="!isCounting" @click="startTiming" round>开始计时</el-button>
   <el-button v-else @click="stopTiming" round>停止计时</el-button>
 
@@ -92,4 +92,9 @@ function setMinutesBlur() {
     </template>
   </el-dialog>
 </template>
-@/stores/timer
+
+<style scoped>
+.timer {
+  font-size: 296px;
+}
+</style>

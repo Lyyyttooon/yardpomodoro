@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { formatToTime } from '@/utils/time'
 import { useTimerStore } from '@/stores/timer'
+import { Select, Close } from '@element-plus/icons-vue'
 
 const timer = useTimerStore()
 
@@ -69,19 +70,24 @@ function setMinutesBlur() {
 </script>
 
 <template>
-  <p v-if="!isCounting">
-    <span>时间：</span>
-    <el-input-number
-      v-model="setMinutes"
-      :min="minFouceMinutes"
-      :max="maxFouceMinutes"
-      @blur="setMinutesBlur"
-    />
-    <span style="margin-left: 8px">分钟</span>
-  </p>
-  <div class="timer" v-else>{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
-  <el-button v-if="!isCounting" @click="startTiming" round>开始计时</el-button>
-  <el-button v-else @click="stopTiming" round>停止计时</el-button>
+  <div v-if="!isCounting" class="timer-setting">
+    <p>
+      <span>计划时间：</span>
+      <el-input-number
+        v-model="setMinutes"
+        :min="minFouceMinutes"
+        :max="maxFouceMinutes"
+        @blur="setMinutesBlur"
+      />
+      <span style="margin-left: 8px">分钟</span>
+    </p>
+    <el-button type="primary" :icon="Select" @click="startTiming">开始专注</el-button>
+  </div>
+
+  <div v-else class="timer-counting">
+    <div class="timer">{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
+    <el-button type="danger" :icon="Close" @click="stopTiming">停止计时</el-button>
+  </div>
 
   <el-dialog v-model="dialogVisible" :close-on-click-modal="false" title="完成">
     <span>恭喜您完成了{{ setMinutes }}分钟的专注！</span>
@@ -94,7 +100,19 @@ function setMinutesBlur() {
 </template>
 
 <style scoped>
-.timer {
-  font-size: 296px;
+.timer-setting {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+}
+.timer-counting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > .timer {
+    font-size: 296px;
+  }
 }
 </style>

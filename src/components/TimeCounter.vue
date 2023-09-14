@@ -6,12 +6,29 @@ import { Select, Close } from '@element-plus/icons-vue'
 
 const timer = useTimerStore()
 
+// 专注时间
 const minFouceMinutes = 10
 const maxFouceMinutes = 1440
 const defaultFouceMinutes = 25
 
-const setMinutes = ref(defaultFouceMinutes)
+// 小休时间
+const minShortBreakMinutes = 5
+const maxShortBreakMinutes = 60
+const defaultShortBreakMinutes = 5
+
+// 大休时间
+const minLongBreakMinutes = 15
+const maxLongBreakMinutes = 60
+const defaultLongBreakMinutes = 15
+
+let countBreakTime = 0
+
+const setFouceMinutes = ref(defaultFouceMinutes)
+const setShortBreakMinutes = ref(defaultShortBreakMinutes)
+const setLongBreakMinutes = ref(defaultLongBreakMinutes)
+
 const countTimeSeconds = ref(0)
+const isFoucing = ref(false)
 const isCounting = ref(false)
 const dialogVisible = ref(false)
 
@@ -38,14 +55,26 @@ function startTiming() {
   timer.toggle()
 
   isCounting.value = true
-  countTimeSeconds.value = setMinutes.value * 60
+  isFoucing.value = true
+  countTimeSeconds.value = setFouceMinutes.value * 60
 
   countTimeSeconds.value--
   timingInterval = window.setInterval(() => {
     if (countTimeSeconds.value <= 0) {
-      dialogVisible.value = true
-      stopTiming()
-      return
+      if (isFoucing.value && countBreakTime < 2) {
+        isFoucing.value = false
+        countBreakTime++
+        countTimeSeconds.value = setShortBreakMinutes.value * 60
+      } else if (isFoucing.value && countBreakTime === 2) {
+        isFoucing.value = false
+        countBreakTime = 0
+        countTimeSeconds.value = setLongBreakMinutes.value * 60
+      } else {
+        isFoucing.value = true
+        dialogVisible.value = true
+        stopTiming()
+        return
+      }
     }
     countTimeSeconds.value--
   }, 1000)
@@ -65,18 +94,38 @@ function stopTiming() {
 }
 
 function setMinutesBlur() {
-  setMinutes.value = Math.floor(setMinutes.value)
+  setFouceMinutes.value = Math.floor(setFouceMinutes.value)
 }
 </script>
 
 <template>
   <div v-if="!isCounting" class="timer-setting">
     <p>
-      <span>计划时间：</span>
+      <span>专注时间：</span>
       <el-input-number
-        v-model="setMinutes"
+        v-model="setFouceMinutes"
         :min="minFouceMinutes"
         :max="maxFouceMinutes"
+        @blur="setMinutesBlur"
+      />
+      <span style="margin-left: 4px">分钟</span>
+    </p>
+    <p>
+      <span>小休时间：</span>
+      <el-input-number
+        v-model="setShortBreakMinutes"
+        :min="minShortBreakMinutes"
+        :max="maxShortBreakMinutes"
+        @blur="setMinutesBlur"
+      />
+      <span style="margin-left: 8px">分钟</span>
+    </p>
+    <p>
+      <span>大休时间：</span>
+      <el-input-number
+        v-model="setLongBreakMinutes"
+        :min="minLongBreakMinutes"
+        :max="maxLongBreakMinutes"
         @blur="setMinutesBlur"
       />
       <span style="margin-left: 8px">分钟</span>
@@ -90,7 +139,7 @@ function setMinutesBlur() {
   </div>
 
   <el-dialog v-model="dialogVisible" :close-on-click-modal="false" title="完成">
-    <span>恭喜您完成了{{ setMinutes }}分钟的专注！</span>
+    <span>恭喜您完成了{{ setFouceMinutes }}分钟的专注！</span>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确认</el-button>

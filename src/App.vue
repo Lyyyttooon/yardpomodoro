@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { useTimerStore } from '@/stores/timer'
+import { ref } from 'vue'
 
 const timer = useTimerStore()
+const isTiming = ref('')
 </script>
 
 <template>
-  <header>
-    <div class="wrapper" v-if="!timer.isTiming">
-      <nav>
-        <RouterLink to="/">专注</RouterLink>
-        <RouterLink to="/about">关于</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <div class="content" :class="isTiming">
+    <header>
+      <div class="wrapper" v-if="!timer.isTiming">
+        <nav>
+          <RouterLink to="/">专注</RouterLink>
+          <RouterLink to="/about">关于</RouterLink>
+        </nav>
+      </div>
+    </header>
 
-  <RouterView />
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
@@ -37,4 +41,3 @@ nav a {
   border-left: 1px solid var(--color-border);
 }
 </style>
-@/stores/timer

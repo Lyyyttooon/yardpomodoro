@@ -2,12 +2,17 @@
 
 #app {
   box-sizing: border-box;
-  padding: 2rem;
-
-  font-weight: normal;
+  margin: 0;
+  padding: 0;
   height: 100%;
+  width: 100%;
 }
 
 #app.timing {
   background: #000000;
+}
+
+.el-button.el-button--primary {
+  background-color: #017dc7;
+  border-radius: 0;
 }

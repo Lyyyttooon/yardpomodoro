@@ -159,6 +159,10 @@ function setMinutesBlur() {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: #111;
+  color: #343434;
 
   > .timer {
     font-size: 296px;

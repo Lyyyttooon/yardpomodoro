@@ -8,24 +8,21 @@ const isTiming = ref('')
 </script>
 
 <template>
-  <div class="content" :class="isTiming">
-    <header>
-      <div class="wrapper" v-if="!timer.isTiming">
-        <nav>
-          <RouterLink to="/">专注</RouterLink>
-          <RouterLink to="/about">关于</RouterLink>
-        </nav>
-      </div>
-    </header>
+  <header v-if="!timer.isTiming">
+    <div class="wrapper">
+      <nav>
+        <RouterLink to="/">专注</RouterLink>
+        <RouterLink to="/about">关于</RouterLink>
+      </nav>
+    </div>
+  </header>
 
-    <RouterView />
-  </div>
+  <RouterView />
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
-  max-height: 100vh;
 }
 
 nav {

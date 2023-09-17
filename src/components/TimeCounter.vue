@@ -31,6 +31,7 @@ const countTimeSeconds = ref(0)
 const isFoucing = ref(false)
 const isCounting = ref(false)
 const dialogVisible = ref(false)
+const showStopButton = ref(false)
 
 let timingInterval: number | undefined = undefined
 
@@ -96,6 +97,18 @@ function stopTiming() {
 function setMinutesBlur() {
   setFouceMinutes.value = Math.floor(setFouceMinutes.value)
 }
+
+window.onmousemove = () => {
+  if (isCounting.value) {
+    showStopButton.value = true
+  }
+}
+
+window.setInterval(() => {
+  if (isCounting.value && showStopButton.value) {
+    showStopButton.value = false
+  }
+}, 3000)
 </script>
 
 <template>
@@ -135,7 +148,9 @@ function setMinutesBlur() {
 
   <div v-else class="timer-counting">
     <div class="timer">{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
-    <el-button type="danger" :icon="Close" @click="stopTiming">停止计时</el-button>
+    <el-button type="danger" :icon="Close" @click="stopTiming" v-show="showStopButton"
+      >停止计时</el-button
+    >
   </div>
 
   <el-dialog v-model="dialogVisible" :close-on-click-modal="false" title="完成">

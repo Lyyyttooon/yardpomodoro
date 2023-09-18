@@ -148,9 +148,11 @@ window.setInterval(() => {
 
   <div v-else class="timer-counting">
     <div class="timer">{{ countHours }}:{{ countMinutes }}:{{ countSeconds }}</div>
-    <el-button type="danger" :icon="Close" @click="stopTiming" v-show="showStopButton"
-      >停止计时</el-button
-    >
+    <transition name="fade">
+      <el-button type="danger" :icon="Close" @click="stopTiming" v-show="showStopButton"
+        >停止计时</el-button
+      >
+    </transition>
   </div>
 
   <el-dialog v-model="dialogVisible" :close-on-click-modal="false" title="完成">
@@ -182,5 +184,14 @@ window.setInterval(() => {
   > .timer {
     font-size: 296px;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

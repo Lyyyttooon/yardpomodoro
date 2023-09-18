@@ -9,7 +9,12 @@ const indexHtml = join('dist/index.html')
 
 function createWindow() {
   win = new BrowserWindow({
-    title: 'Main window',
+    frame: false,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: 'rgba(255,255,255,0)',
+      symbolColor: '#000'
+    },
     webPreferences: {
       preload
     }

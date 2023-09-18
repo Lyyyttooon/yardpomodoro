@@ -4,10 +4,10 @@ import { useTimerStore } from '@/stores/timer'
 import { ref } from 'vue'
 
 const timer = useTimerStore()
-const isTiming = ref('')
 </script>
 
 <template>
+  <div v-if="!timer.isTiming" class="title-bar"></div>
   <header v-if="!timer.isTiming">
     <div class="wrapper">
       <nav>
@@ -21,6 +21,11 @@ const isTiming = ref('')
 </template>
 
 <style scoped>
+.title-bar {
+  height: 32px;
+  background-color: #fff;
+}
+
 header {
   line-height: 1.5;
 }
@@ -29,7 +34,6 @@ nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
 }
 
 nav a {

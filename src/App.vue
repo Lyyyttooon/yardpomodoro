@@ -8,6 +8,7 @@ const timer = useTimerStore()
 
 <template>
   <div v-if="!timer.isTiming" class="title-bar"></div>
+
   <header v-if="!timer.isTiming">
     <div class="wrapper">
       <nav>
@@ -22,12 +23,14 @@ const timer = useTimerStore()
 
 <style scoped>
 .title-bar {
-  height: 32px;
-  background-color: #fff;
+  height: 35px;
+  background-color: #1f1f1f;
+  -webkit-app-region: drag;
 }
 
 header {
   line-height: 1.5;
+  margin-top: 16px;
 }
 
 nav {

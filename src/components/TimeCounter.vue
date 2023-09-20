@@ -178,8 +178,7 @@ window.setInterval(() => {
   align-items: center;
   height: 100%;
   width: 100%;
-  background-color: #111;
-  color: #343434;
+  color: #d4d4d4;
 
   > .timer {
     font-size: 296px;

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { useTimerStore } from '@/stores/timer'
-import { ref } from 'vue'
 
 const timer = useTimerStore()
 </script>
@@ -9,23 +8,33 @@ const timer = useTimerStore()
 <template>
   <div v-if="!timer.isTiming" class="title-bar"></div>
 
-  <header v-if="!timer.isTiming">
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">专注</RouterLink>
-        <RouterLink to="/about">关于</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <section class="container">
+    <header v-if="!timer.isTiming">
+      <div class="wrapper">
+        <nav>
+          <RouterLink to="/">专注</RouterLink>
+          <RouterLink to="/about">关于</RouterLink>
+        </nav>
+      </div>
+    </header>
 
-  <RouterView />
+    <RouterView />
+  </section>
 </template>
 
 <style scoped>
 .title-bar {
   height: 35px;
-  background-color: #1f1f1f;
+  background-color: #323233;
   -webkit-app-region: drag;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: #1e1e1e;
+  color: #fff;
+  flex: 1;
 }
 
 header {

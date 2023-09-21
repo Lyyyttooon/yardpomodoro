@@ -34,19 +34,24 @@ const dialogVisible = ref(false)
 const showStopButton = ref(false)
 
 let timingInterval: number | undefined = undefined
+let visibilityHiddenTimeout: number | undefined = undefined
 
+// 计算小时
 const countHours = computed(() => {
   return formatToTime(Math.floor(countTimeSeconds.value / 3600))
 })
 
+// 计算分钟
 const countMinutes = computed(() => {
   return formatToTime(Math.floor((countTimeSeconds.value % 3600) / 60))
 })
 
+// 计算秒数
 const countSeconds = computed(() => {
   return formatToTime(Math.floor(countTimeSeconds.value % 60))
 })
 
+// 开始计时
 function startTiming() {
   if (isCounting.value) {
     return
@@ -81,6 +86,7 @@ function startTiming() {
   }, 1000)
 }
 
+// 停止计时
 function stopTiming() {
   if (!isCounting.value) {
     return
@@ -94,21 +100,43 @@ function stopTiming() {
   countTimeSeconds.value = 0
 }
 
+// 离开输入框焦点时，将输入框的值取整
 function setMinutesBlur() {
   setFouceMinutes.value = Math.floor(setFouceMinutes.value)
 }
 
+// 页面隐藏时，首先提示用户，然后3秒后停止计时
+function visibilityChangeHandler() {
+  if (!isCounting.value) {
+    return
+  }
+  if (document.visibilityState === 'hidden') {
+    new Notification('提示！', {
+      body: '页面隐藏，在3秒后停止计时'
+    })
+    visibilityHiddenTimeout = window.setTimeout(() => {
+      stopTiming()
+    }, 3000)
+  } else {
+    window.clearTimeout(visibilityHiddenTimeout)
+  }
+}
+
+// 3秒后隐藏停止计时按钮
+window.setInterval(() => {
+  if (isCounting.value && showStopButton.value) {
+    showStopButton.value = false
+  }
+}, 3000)
+
+// 鼠标移动时，显示停止计时按钮
 window.onmousemove = () => {
   if (isCounting.value) {
     showStopButton.value = true
   }
 }
 
-window.setInterval(() => {
-  if (isCounting.value && showStopButton.value) {
-    showStopButton.value = false
-  }
-}, 3000)
+document.addEventListener('visibilitychange', visibilityChangeHandler)
 </script>
 
 <template>

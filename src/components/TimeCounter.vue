@@ -147,7 +147,7 @@ document.addEventListener('visibilitychange', visibilityChangeHandler)
         v-model="setFouceMinutes"
         :min="minFouceMinutes"
         :max="maxFouceMinutes"
-        @blur="setMinutesBlur"
+        @blur="() => (setFouceMinutes = Math.floor(setFouceMinutes))"
       />
       <span style="margin-left: 4px">分钟</span>
     </p>
@@ -157,7 +157,7 @@ document.addEventListener('visibilitychange', visibilityChangeHandler)
         v-model="setShortBreakMinutes"
         :min="minShortBreakMinutes"
         :max="maxShortBreakMinutes"
-        @blur="setMinutesBlur"
+        @blur="() => (setShortBreakMinutes = Math.floor(setShortBreakMinutes))"
       />
       <span style="margin-left: 8px">分钟</span>
     </p>
@@ -167,7 +167,7 @@ document.addEventListener('visibilitychange', visibilityChangeHandler)
         v-model="setLongBreakMinutes"
         :min="minLongBreakMinutes"
         :max="maxLongBreakMinutes"
-        @blur="setMinutesBlur"
+        @blur="() => (setLongBreakMinutes = Math.floor(setLongBreakMinutes))"
       />
       <span style="margin-left: 8px">分钟</span>
     </p>

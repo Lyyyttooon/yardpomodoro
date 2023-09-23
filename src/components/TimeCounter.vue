@@ -100,23 +100,18 @@ function stopTiming() {
   countTimeSeconds.value = 0
 }
 
-// 离开输入框焦点时，将输入框的值取整
-function setMinutesBlur() {
-  setFouceMinutes.value = Math.floor(setFouceMinutes.value)
-}
-
 // 页面隐藏时，首先提示用户，然后3秒后停止计时
 function visibilityChangeHandler() {
   if (!isCounting.value) {
     return
   }
   if (document.visibilityState === 'hidden') {
-    new Notification('提示！', {
+    const n = new Notification('提示！', {
       body: '页面隐藏，在3秒后停止计时'
     })
-    visibilityHiddenTimeout = window.setTimeout(() => {
-      stopTiming()
-    }, 3000)
+    n.onclick = () => {
+      console.log('click Notification')
+    }
   } else {
     window.clearTimeout(visibilityHiddenTimeout)
   }

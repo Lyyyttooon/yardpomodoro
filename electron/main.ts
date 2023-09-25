@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, powerSaveBlocker } from 'electron'
 import { join } from 'node:path'
 
 let win: BrowserWindow | null = null
+let powerSaveBlockerId: number | null = null
 
 const preload = join(__dirname, './preload.js')
 const url = process.env.VITE_DEV_SERVER_URL
@@ -54,5 +55,11 @@ app.on('window-all-closed', () => {
 function handleSetFullscreen(_: any, fullscreen: boolean) {
   if (win) {
     win.setFullScreen(fullscreen)
+    if (powerSaveBlockerId) {
+      powerSaveBlocker.stop(powerSaveBlockerId)
+      powerSaveBlockerId = null
+    } else {
+      powerSaveBlockerId = powerSaveBlocker.start('prevent-display-sleep')
+    }
   }
 }

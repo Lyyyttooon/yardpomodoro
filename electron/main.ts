@@ -35,6 +35,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   ipcMain.on('set-fullscreen', handleSetFullscreen)
+  ipcMain.on('set-focus', handleFouseMainWindow)
 
   createWindow()
 })
@@ -52,6 +53,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
+// 设置全屏，并阻止屏幕休眠
 function handleSetFullscreen(_: any, fullscreen: boolean) {
   if (win) {
     win.setFullScreen(fullscreen)
@@ -61,5 +63,12 @@ function handleSetFullscreen(_: any, fullscreen: boolean) {
     } else {
       powerSaveBlockerId = powerSaveBlocker.start('prevent-display-sleep')
     }
+  }
+}
+
+// 焦点到主窗口
+function handleFouseMainWindow() {
+  if (win) {
+    win.focus()
   }
 }

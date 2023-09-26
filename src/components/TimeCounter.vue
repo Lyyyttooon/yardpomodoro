@@ -35,6 +35,7 @@ let countBreakTime: number = 0
 let timingInterval: number | undefined = undefined
 let visibilityHiddenTimeout: number | undefined = undefined
 let stopTimerTimeout: number | undefined = undefined
+let notification: Notification | undefined = undefined
 
 // 计算小时
 const countHours = computed(() => {
@@ -106,14 +107,19 @@ function visibilityChangeHandler() {
     return
   }
   if (document.visibilityState === 'hidden') {
-    const n = new Notification('提示！', {
+    if (notification) {
+      return
+    }
+    notification = new Notification('提示！', {
       body: '页面隐藏，在3秒后停止计时'
     })
-    n.onclick = () => {
-      console.log('click Notification')
+    notification.onclick = () => {
+      window.electronAPI.setFouse()
+      notification = undefined
     }
   } else {
     window.clearTimeout(visibilityHiddenTimeout)
+    notification = undefined
   }
 }
 

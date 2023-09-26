@@ -21,8 +21,6 @@ const minLongBreakMinutes = 15
 const maxLongBreakMinutes = 60
 const defaultLongBreakMinutes = 15
 
-let countBreakTime = 0
-
 const setFouceMinutes = ref(defaultFouceMinutes)
 const setShortBreakMinutes = ref(defaultShortBreakMinutes)
 const setLongBreakMinutes = ref(defaultLongBreakMinutes)
@@ -33,8 +31,10 @@ const isCounting = ref(false)
 const dialogVisible = ref(false)
 const showStopButton = ref(false)
 
+let countBreakTime: number = 0
 let timingInterval: number | undefined = undefined
 let visibilityHiddenTimeout: number | undefined = undefined
+let stopTimerTimeout: number | undefined = undefined
 
 // 计算小时
 const countHours = computed(() => {
@@ -117,18 +117,18 @@ function visibilityChangeHandler() {
   }
 }
 
-// 3秒后隐藏停止计时按钮
-window.setInterval(() => {
-  if (isCounting.value && showStopButton.value) {
-    showStopButton.value = false
-  }
-}, 3000)
-
 // 鼠标移动时，显示停止计时按钮
 window.onmousemove = () => {
-  if (isCounting.value) {
-    showStopButton.value = true
+  if (!isCounting.value) {
+    return
   }
+  showStopButton.value = true
+  if (stopTimerTimeout) {
+    window.clearTimeout(stopTimerTimeout)
+  }
+  stopTimerTimeout = window.setTimeout(() => {
+    showStopButton.value = false
+  }, 3000)
 }
 
 document.addEventListener('visibilitychange', visibilityChangeHandler)

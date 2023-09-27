@@ -106,20 +106,23 @@ function visibilityChangeHandler() {
   if (!isCounting.value) {
     return
   }
-  if (document.visibilityState === 'hidden') {
-    if (notification) {
-      return
-    }
-    notification = new Notification('提示！', {
-      body: '页面隐藏，在3秒后停止计时'
-    })
-    notification.onclick = () => {
-      window.electronAPI.setFouse()
-      notification = undefined
-    }
-  } else {
+  if (document.visibilityState === 'visible') {
     window.clearTimeout(visibilityHiddenTimeout)
     notification = undefined
+    return
+  }
+
+  if (notification) {
+    return
+  }
+
+  notification = new Notification('提示！', {
+    body: '页面隐藏，在3秒后停止计时',
+    tag: 'fouce-notification'
+  })
+  notification.onclick = (event) => {
+    event.preventDefault()
+    window.electronAPI.setFouse()
   }
 }
 
@@ -137,7 +140,7 @@ window.onmousemove = () => {
   }, 3000)
 }
 
-document.addEventListener('visibilitychange', visibilityChangeHandler)
+document.addEventListener('visibilitychange', visibilityChangeHandler, false)
 </script>
 
 <template>

@@ -106,16 +106,21 @@ function visibilityChangeHandler() {
   if (!isCounting.value) {
     return
   }
+
   if (document.visibilityState === 'visible') {
-    window.clearTimeout(visibilityHiddenTimeout)
-    notification = undefined
+    if (visibilityHiddenTimeout) {
+      window.clearTimeout(visibilityHiddenTimeout)
+    }
+    visibilityHiddenTimeout = window.setTimeout(() => {
+      notification?.close()
+      notification = undefined
+    }, 5000)
     return
   }
 
   if (notification) {
     return
   }
-
   notification = new Notification('提示！', {
     body: '页面隐藏，在3秒后停止计时',
     tag: 'fouce-notification'
